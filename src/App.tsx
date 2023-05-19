@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import Typography from '@mui/material/Typography';
-import BookList from "./BookList";
+import BookListContainer from './BookListContainer';
 
 function App() {
   return (
