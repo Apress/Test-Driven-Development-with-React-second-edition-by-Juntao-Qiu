@@ -2,6 +2,15 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 
 import BookList from './BookList';
+import {MemoryRouter as Router} from 'react-router-dom';
+
+const renderWithRouter = (component: JSX.Element) => {
+  return {
+    ...render(<Router>
+      {component}
+    </Router>)
+  }
+};
 
 describe('BookList', () => {
   it('render books', async () => {
@@ -11,7 +20,8 @@ describe('BookList', () => {
         {'name': 'Domain-driven design', 'id': 2},
       ]
     };
-    render(<BookList {...props} />);
+
+    renderWithRouter(<BookList {...props} />);
 
     const headings = await screen.findAllByRole('heading')
 
