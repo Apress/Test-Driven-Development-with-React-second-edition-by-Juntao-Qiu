@@ -48,24 +48,4 @@ describe("BookDetail", () => {
     const description = screen.getByTestId("book-description");
     expect(description).toHaveTextContent(props.book.name);
   });
-
-  xit('Shows *more* link when description is too long', () => {
-    const props = {
-      book: {
-        id: 1,
-        name: 'Refactoring',
-        description: 'The book about how to do refactoring ....'
-      }
-    };
-
-    render(<BookDetail {...props} />);
-
-    const link = screen.getByText('Show more...');
-    expect(link).toBeInTheDocument();
-
-    userEvent.click(link);
-
-    const description = screen.getByTestId("book-description");
-    expect(description).toHaveTextContent('The book about how to do refactoring ....');
-  })
 });

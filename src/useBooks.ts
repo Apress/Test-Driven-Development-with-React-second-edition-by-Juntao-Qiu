@@ -7,13 +7,15 @@ const useBooks = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
 
+  const [term, setTerm] = useState<string>('');
+
   useEffect(() => {
-    const fetchBooks = async () => {
+    const fetchBooks = async (term: string) => {
       setError(false);
       setLoading(true);
 
       try {
-        const response = await axios.get('http://localhost:8080/books?_sort=id');
+        const response = await axios.get(`http://localhost:8080/books?q=${term}&_sort=id`);
         setBooks(response.data);
       } catch (e) {
         setError(true);
@@ -22,13 +24,15 @@ const useBooks = () => {
       }
     }
 
-    fetchBooks();
-  }, [])
+    fetchBooks(term);
+  }, [term])
 
   return {
     loading,
     error,
-    books
+    books,
+    term,
+    setTerm
   }
 }
 
