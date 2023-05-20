@@ -1,37 +1,59 @@
-import axios from 'axios';
+const gotoApp = () => {
+  cy.visit("http://localhost:3000/");
+};
 
-describe('Bookish application', function () {
+const checkAppTitle = () => {
+  cy.get('h2[data-test="heading"]').contains("Bookish");
+};
 
-  it('Visits the bookish', function () {
-    cy.visit('http://localhost:3000/');
-    cy.get('h2[data-test="heading"]').contains('Bookish')
+const checkBookListWith = (expectation: string[] = []) => {
+  cy.get('div[data-test="book-list"]').should("exist");
+  cy.get("div.book-item").should((books) => {
+    expect(books).to.have.length(expectation.length);
+
+    const titles = [...books].map((x) => x.querySelector("h2").innerHTML);
+    expect(titles).to.eql(expectation);
+  });
+};
+
+const gotoNthBookInTheList = (index: number) => {
+  cy.get("div.book-item").contains("View Details").eq(index).click();
+}
+
+const checkBookDetail = () => {
+  cy.url().should("include", "/books/1");
+}
+
+const performSearch = (term: string) => {
+  cy.get('[data-test="search"] input').type(term);
+}
+
+describe("Bookish application", function () {
+  beforeEach(() => {
+    gotoApp();
   })
 
-  it('Shows a book list', () => {
-    cy.visit('http://localhost:3000/');
-    cy.get('div[data-test="book-list"]').should('exist');
-
-    cy.get('div.book-item').should((books) => {
-      expect(books).to.have.length(4);
-      const titles = [...books].map(x => x.querySelector('h2').innerHTML);
-
-      expect(titles).to.eql(
-        ['Refactoring', 'Domain-driven design', 'Building Microservices', 'Acceptance Test Driven Development with React']
-      )
-    })
+  it("Visits the bookish", function () {
+    checkAppTitle();
   });
 
-  it('Goes to the detail page', () => {
-    cy.visit('http://localhost:3000/');
-    cy.get('div.book-item').contains('View Details').eq(0).click();
-    cy.url().should('include', "/books/1")
+  it("Shows a book list", () => {
+    checkAppTitle();
+    checkBookListWith([
+      "Refactoring",
+      "Domain-driven design",
+      "Building Microservices",
+      "Acceptance Test Driven Development with React",
+    ]);
   });
 
-  it('Searches for a title', () => {
-    cy.visit('http://localhost:3000/');
-    cy.get('div.book-item').should('have.length', 4);
-    cy.get('[data-test="search"] input').type('design');
-    cy.get('div.book-item').should('have.length', 1);
-    cy.get('div.book-item').eq(0).contains('Domain-driven design');
+  it("Goes to the detail page", () => {
+    gotoNthBookInTheList(0);
+    checkBookDetail();
   });
-})
+
+  it("Searches for a title", () => {
+    performSearch("design")
+    checkBookListWith(['Domain-driven design'])
+  });
+});
