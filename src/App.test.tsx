@@ -3,17 +3,31 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 
 import {MemoryRouter as Router} from 'react-router-dom';
+import { Provider } from "react-redux";
+import store from "./store";
 
-const renderWithRouter = (component: JSX.Element) => {
+const customRender = (component: JSX.Element) => {
   return {
-    ...render(<Router>
-      {component}
-    </Router>)
+    ...render(
+      <Provider store={store}>
+        <Router>
+          {component}
+        </Router>
+      </Provider>
+    )
   }
-};
+}
 
-test('renders learn react link', () => {
-  renderWithRouter(<App />);
-  const linkElement = screen.getByText(/Bookish/i);
-  expect(linkElement).toBeInTheDocument();
+// const renderWithRouter = (component: JSX.Element) => {
+//   return {
+//     ...render(<Router>
+//       {component}
+//     </Router>)
+//   }
+// };
+
+it('renders bookish', () => {
+  customRender(<App />);
+  const heading = screen.getByText(/Bookish/i);
+  expect(heading).toBeInTheDocument();
 });
