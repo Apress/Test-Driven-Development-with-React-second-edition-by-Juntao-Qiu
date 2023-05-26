@@ -13,7 +13,9 @@ const ReviewForm = ({ book }: { book: Book }) => {
 
   const handleSubmit = () => {
     dispatch(addReview({ id: book.id, name, content }));
-    dispatch(fetchBookDetails(book.id));
+    setTimeout(() => {
+      dispatch(fetchBookDetails(book.id));
+    }, 0);
   };
 
   return (

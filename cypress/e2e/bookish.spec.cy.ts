@@ -1,44 +1,25 @@
-const gotoApp = () => {
-  cy.visit("http://localhost:3000/");
-};
-
-const checkAppTitle = () => {
-  cy.get('h2[data-test="heading"]').contains("Bookish");
-};
-
-const checkBookListWith = (expectation: string[] = []) => {
-  cy.get('div[data-test="book-list"]').should("exist");
-  cy.get("div.book-item").should((books) => {
-    expect(books).to.have.length(expectation.length);
-
-    const titles = [...books].map((x) => x.querySelector("h2").innerHTML);
-    expect(titles).to.eql(expectation);
-  });
-};
-
-const gotoNthBookInTheList = (index: number) => {
-  cy.get("div.book-item").contains("View Details").eq(index).click();
-}
-
-const checkBookDetail = () => {
-  cy.url().should("include", "/books/1");
-}
-
-const performSearch = (term: string) => {
-  cy.get('[data-test="search"] input').type(term);
-}
+import {
+  checkAppTitle,
+  checkBookDetail,
+  checkBookListWith,
+  checkReview,
+  composeReview,
+  gotoApp,
+  gotoNthBookInTheList,
+  performSearch,
+} from "./helpers";
 
 describe("Bookish application", function () {
   beforeEach(() => {
     gotoApp();
-  })
+  });
 
   it("Visits the bookish", function () {
-    checkAppTitle();
+    checkAppTitle("Bookish");
   });
 
   it("Shows a book list", () => {
-    checkAppTitle();
+    checkAppTitle("Bookish");
     checkBookListWith([
       "Refactoring",
       "Domain-driven design",
@@ -49,11 +30,23 @@ describe("Bookish application", function () {
 
   it("Goes to the detail page", () => {
     gotoNthBookInTheList(0);
-    checkBookDetail();
+    checkBookDetail("Refactoring");
   });
 
   it("Searches for a title", () => {
-    performSearch("design")
-    checkBookListWith(['Domain-driven design'])
+    performSearch("design");
+    checkBookListWith(["Domain-driven design"]);
+  });
+
+  it("Write a review for a book", () => {
+    cy.request("DELETE", "http://localhost:8080/books/1/reviews");
+
+    gotoNthBookInTheList(0);
+    checkBookDetail("Refactoring");
+
+    composeReview("Juntao Qiu", "Excellent work!");
+    checkReview("Excellent work!");
   });
 });
+
+export {}
