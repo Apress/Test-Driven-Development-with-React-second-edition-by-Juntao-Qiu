@@ -4,7 +4,7 @@ import App from './App';
 
 import {MemoryRouter as Router} from 'react-router-dom';
 import { Provider } from "react-redux";
-import store from "./store";
+import store from "./redux/store";
 
 const customRender = (component: JSX.Element) => {
   return {

@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 import SearchBox from "./SearchBox";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import bookListReducer from "../bookListSlice";
+import bookListReducer from "../redux/bookListSlice";
 
 describe("SearchBox", () => {
   it("renders input", () => {

@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
-import { fetchBooks, setTerm } from "../bookListSlice";
+import { fetchBooks, setTerm } from "../redux/bookListSlice";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store";
+import { AppDispatch } from "../redux/store";
 
 const SearchBox = () => {
   const dispatch = useDispatch<AppDispatch>();

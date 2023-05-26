@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Book } from "./types";
+import { Book } from "../types";
 
 export const fetchBooks = createAsyncThunk<Book[], string>(
   "books/search",

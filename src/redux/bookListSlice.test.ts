@@ -1,5 +1,4 @@
-import bookListReducer, { setTerm, fetchBooks } from "./bookListSlice";
-import { Book } from "./types";
+import bookListReducer, { setTerm } from "./bookListSlice";
 
 describe("bookListReducer", () => {
   const initialState = {

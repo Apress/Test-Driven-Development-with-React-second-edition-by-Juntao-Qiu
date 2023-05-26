@@ -1,8 +1,8 @@
 import BookList from "./BookList";
 import SearchBox from "./SearchBox";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchBooks } from "../bookListSlice";
-import type { AppDispatch, RootState } from "../store";
+import { fetchBooks } from "../redux/bookListSlice";
+import type { AppDispatch, RootState } from "../redux/store";
 import { useEffect } from "react";
 
 const BookListContainer = () => {

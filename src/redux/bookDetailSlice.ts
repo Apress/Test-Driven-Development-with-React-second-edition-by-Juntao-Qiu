@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Book } from "./types";
+import { Book, Review } from "../types";
 
-export const fetchBookDetails = createAsyncThunk<Book, string>(
+export const fetchBookDetails = createAsyncThunk<Book, number>(
   "bookDetails/fetch",
   async (id) => {
     const response = await axios.get(`http://localhost:8080/books/${id}`);
